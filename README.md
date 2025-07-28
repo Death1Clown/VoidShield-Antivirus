@@ -102,6 +102,6 @@ VoidShield Antivirus is a free, open-source desktop antivirus tool written in C#
 Please keep contributions scoped, document new functionality, and follow the existing coding style.
 
 ## License
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the `VSPL v1.0 License`. See LICENSE for details.
 
 Built with ♥ by the VoidShield community.
