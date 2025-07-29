@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML/CSS/JS Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      padding: 1rem;
+      text-align: center;
+      background-color: #1f1f1f;
+      color: #00ffff;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #333;
+    }
+    .panel:last-child {
+      border-right: none;
+    }
+    .panel label {
+      background-color: #222;
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: bold;
+      color: #00ffff;
+      border-bottom: 1px solid #333;
+    }
+    textarea {
+      flex: 1;
+      padding: 1rem;
+      background-color: #1e1e1e;
+      color: #00ffcc;
+      border: none;
+      resize: none;
+      font-family: monospace;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    iframe {
+      flex: 1;
+      border: none;
+      background-color: #fff;
+    }
+    .preview {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .preview label {
+      background-color: #222;
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: bold;
+      color: #00ffff;
+      border-bottom: 1px solid #333;
+    }
+    .controls {
+      padding: 0.5rem;
+      background-color: #1f1f1f;
+      text-align: center;
+      border-top: 1px solid #333;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .controls button {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    .controls button:hover {
+      background-color: #00cccc;
+    }
+  </style>
+</head>
+<body>
+  <header>🧪 HTML / CSS / JS Editor</header>
+  <div class="container">
+    <div class="panel">
+      <label>HTML</label>
+      <textarea id="html" oninput="updatePreview()">&lt;h1&gt;Hello, World!&lt;/h1&gt;</textarea>
+    </div>
+    <div class="panel">
+      <label>CSS</label>
+      <textarea id="css" oninput="updatePreview()">h1 { color: cyan; text-align: center; }</textarea>
+    </div>
+    <div class="panel">
+      <label>JavaScript</label>
+      <textarea id="js" oninput="updatePreview()">console.log("Hello from JS!");</textarea>
+    </div>
+    <div class="preview">
+      <label>Preview</label>
+      <iframe id="output"></iframe>
+      <div class="controls">
+        <button onclick="openInNewWindow()">🔗 Open in New Window</button>
+        <button onclick="downloadFiles()">📦 Download Files</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getCombinedCode() {
+      const html = document.getElementById("html").value;
+      const css = `<style>${document.getElementById("css").value}</style>`;
+      const js = `<script>${document.getElementById("js").value}<\/script>`;
+      return html + css + js;
+    }
+
+    function updatePreview() {
+      document.getElementById("output").srcdoc = getCombinedCode();
+    }
+
+    function openInNewWindow() {
+      const code = getCombinedCode();
+      const win = window.open();
+      win.document.open();
+      win.document.write(code);
+      win.document.close();
+    }
+
+    function downloadFiles() {
+      const html = document.getElementById("html").value;
+      const css = document.getElementById("css").value;
+      const js = document.getElementById("js").value;
+
+      download("index.html", html);
+      download("style.css", css);
+      download("script.js", js);
+    }
+
+    function download(filename, content) {
+      const blob = new Blob([content], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    // Initial render
+    updatePreview();
+  </script>
+</body>
+</html>
